@@ -6,6 +6,7 @@ import be.kaasnapps.gravitor.model.util.Point;
  * Created by jonas on 24/04/2015.
  */
 public class Planet extends RoundPhysicalObject {
+    //test
 
     public GravityField getGravityField() {
         return gravityField;
