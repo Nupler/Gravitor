@@ -1,0 +1,114 @@
+package be.kaasnapps.gravitor.model;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import be.kaasnapps.gravitor.model.asteroid.Asteroid;
+import be.kaasnapps.gravitor.model.util.Point;
+import be.kaasnapps.gravitor.model.util.Vector;
+
+/**
+ * Created by jonas on 6/04/2015.
+ */
+public class Game {
+
+    private List<GravityField> gravityFields = new ArrayList<GravityField>();
+    private Planet planet;
+    private GravityField currentWell;
+    private int width, height;
+    private List<Asteroid> asteroids = new ArrayList<>();
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
+    }
+
+    public Game(int width, int height) {
+        Point planetLocation = new Point(width / 2, height / 2);
+        planet = new Planet(planetLocation, 40);
+        this.width = width;
+        this.height = height;
+        addAsteroid();
+    }
+
+    public void addGravityWell(GravityField gravityWell) {
+        gravityFields.add(gravityWell);
+        currentWell = gravityWell;
+    }
+
+    public void addAsteroid() {
+        Vector direction = new Vector(0.5, 0.5);
+        direction.normalize();
+        Point asteroidLocation = new Point(0, 0);
+        Asteroid asteroid = new Asteroid(3, asteroidLocation, 10, direction);
+        asteroids.add(asteroid);
+    }
+
+    public void closeLastOpenedGravityWell() {
+        currentWell = null;
+    }
+
+    public void tick() {
+        updateGravityWells();
+
+        for (Asteroid a : asteroids) {
+            a.updateLocation();
+            if (planet.getGravityField().intersects(a)) {
+                Vector gravity = new Vector(a.getLocation(), planet.getLocation());
+                gravity.normalize();
+                gravity.setX(gravity.getX() / 60);
+                gravity.setY(gravity.getY() / 60);
+                a.changeDirection(gravity);
+            }
+        }
+
+        for (GravityField gravityField : gravityFields) {
+            for(Asteroid asteroid : asteroids){
+                if(gravityField.intersects(asteroid)){
+                    Vector gravity = new Vector(asteroid.getLocation(), gravityField.getLocation());
+                    gravity.normalize();
+                    gravity.setX(gravity.getX() / 20);
+                    gravity.setY(gravity.getY() / 20);
+                    asteroid.changeDirection(gravity);
+                }
+            }
+
+        }
+        Random r = new Random();
+        int misschien = r.nextInt(30);
+        if (misschien == 3) {
+            addAsteroid();
+        }
+    }
+
+    private void updateGravityWells() {
+        List<GravityField> toRemoveWells = new ArrayList<>();
+
+        for (GravityField w : gravityFields) {
+            if (w == currentWell) {
+                w.grow();
+            } else {
+                if (w.shrink()) {
+                    toRemoveWells.add(w);
+                }
+            }
+        }
+
+        for (GravityField w : toRemoveWells) {
+            gravityFields.remove(w);
+        }
+    }
+
+    public List<GravityField> getGravityFields() {
+        return gravityFields;
+    }
+
+    public List<Asteroid> getAsteroids() {
+        return asteroids;
+    }
+
+}
