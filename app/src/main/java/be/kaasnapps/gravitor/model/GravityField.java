@@ -3,6 +3,7 @@ package be.kaasnapps.gravitor.model;
 import be.kaasnapps.gravitor.model.util.Point;
 
 /**
+ * test
  * Created by jonas on 6/04/2015.
  */
 public class GravityField extends RoundPhysicalObject {
