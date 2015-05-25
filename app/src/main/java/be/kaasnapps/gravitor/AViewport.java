@@ -89,7 +89,7 @@ public class AViewport extends Activity implements View.OnTouchListener
 
             setMeasuredDimension( width, height );
         }
-
+        // GOEDE UITLEG!!!!!
         /*
          _______________________________________
          | ______________                        |
