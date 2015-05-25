@@ -1,6 +1,8 @@
 package be.kaasnapps.gravitor.view;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +10,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import be.kaasnapps.gravitor.R;
 import be.kaasnapps.gravitor.model.asteroid.Asteroid;
 import be.kaasnapps.gravitor.model.Game;
 import be.kaasnapps.gravitor.model.GravityField;
@@ -23,6 +26,7 @@ public class GameSurfaceView extends SurfaceView {
     private final Paint gravityFieldPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint planetPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint asteroidPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint scorePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private Point lastMotionLocation;
     private Point translation = new Point(0, 0);
@@ -30,6 +34,9 @@ public class GameSurfaceView extends SurfaceView {
     private SurfaceHolder surfaceHolder;
     private GameThread gameThread;
     private Game game;
+
+    private Bitmap pngAsteroid;
+    private Bitmap pngPlanet;
 
     public GameSurfaceView(Context context) {
         super(context);
@@ -44,6 +51,13 @@ public class GameSurfaceView extends SurfaceView {
 
         asteroidPaint.setColor(Color.YELLOW);
         asteroidPaint.setStyle(Paint.Style.STROKE);
+
+        scorePaint.setColor(Color.WHITE);
+        scorePaint.setStyle(Paint.Style.FILL);
+        scorePaint.setTextSize(50);
+
+        pngAsteroid = BitmapFactory.decodeResource(getResources(), R.drawable.football);
+        pngPlanet = BitmapFactory.decodeResource(getResources(),R.drawable.football);
 
         init();
     }
@@ -162,14 +176,24 @@ public class GameSurfaceView extends SurfaceView {
                     gravityFieldPaint);
         }
         for (Asteroid asteroid : game.getAsteroids()) {
-            canvas.drawCircle(
+            //canvas.drawCircle(
+            //        (float) asteroid.getLocation().getX(),
+            //        (float) asteroid.getLocation().getY(),
+            //        (float) asteroid.getRadius(),
+            //        asteroidPaint);
+            canvas.drawBitmap(
+                    pngAsteroid,
                     (float) asteroid.getLocation().getX(),
                     (float) asteroid.getLocation().getY(),
-                    (float) asteroid.getRadius(),
-                    asteroidPaint);
+                    asteroidPaint
+            );
         }
 
-
+        canvas.drawText(
+                ""+game.getScore(),
+                (float) (-translation.getX()+80),
+                (float) (-translation.getY()+80),
+                scorePaint);
     }
 }
 

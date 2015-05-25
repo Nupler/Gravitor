@@ -18,6 +18,7 @@ public class Game {
     private GravityField currentWell;
     private int width, height;
     private List<Asteroid> asteroids = new ArrayList<>();
+    private int score;
 
     public Planet getPlanet() {
         return planet;
@@ -33,6 +34,7 @@ public class Game {
         this.width = width;
         this.height = height;
         addAsteroid();
+        score=0;
     }
 
     public void addGravityWell(GravityField gravityWell) {
@@ -78,6 +80,32 @@ public class Game {
             }
 
         }
+        //Collisions
+            //for each asteroid check intersect
+        List<Asteroid> toRemove = new ArrayList<Asteroid>();
+        for (Asteroid a : asteroids){
+            for (Asteroid b : asteroids){
+                if(!a.equals(b)){
+                    if (a.intersects(b)){
+                        toRemove.add(a);
+                        score+=1;
+                    }
+                }
+            }
+        }
+            //for each asteroid, check planet intersect
+        for (Asteroid a : asteroids){
+            if (a.intersects(planet)){
+                toRemove.add(a);
+                score-=1;
+            }
+
+        }
+            //delete asteroids
+        for(Asteroid toRem : toRemove){
+            asteroids.remove(toRem);
+        }
+
         Random r = new Random();
         int misschien = r.nextInt(30);
         if (misschien == 3) {
@@ -111,4 +139,7 @@ public class Game {
         return asteroids;
     }
 
+    public int getScore(){
+        return score;
+        }
 }
