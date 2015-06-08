@@ -1,9 +1,13 @@
 package be.kaasnapps.gravitor.model;
 
+import android.content.Context;
+import android.media.MediaPlayer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import be.kaasnapps.gravitor.R;
 import be.kaasnapps.gravitor.model.asteroid.Asteroid;
 import be.kaasnapps.gravitor.model.util.Point;
 import be.kaasnapps.gravitor.model.util.Vector;
@@ -19,6 +23,7 @@ public class Game {
     private int width, height;
     private List<Asteroid> asteroids = new ArrayList<>();
     private int score;
+    private MediaPlayer mediaPlayer;
 
     public Planet getPlanet() {
         return planet;
@@ -28,13 +33,14 @@ public class Game {
         this.planet = planet;
     }
 
-    public Game(int width, int height) {
+    public Game(int width, int height, Context context) {
         Point planetLocation = new Point(width / 2, height / 2);
         planet = new Planet(planetLocation, 40);
         this.width = width;
         this.height = height;
         addAsteroid();
         score=0;
+        mediaPlayer = MediaPlayer.create(context, R.raw.pang);
     }
 
     public void addGravityWell(GravityField gravityWell) {
@@ -89,6 +95,7 @@ public class Game {
                     if (a.intersects(b)){
                         toRemove.add(a);
                         score+=1;
+                        mediaPlayer.start();
                     }
                 }
             }
@@ -98,6 +105,7 @@ public class Game {
             if (a.intersects(planet)){
                 toRemove.add(a);
                 score-=1;
+                mediaPlayer.start();
             }
 
         }
@@ -112,7 +120,7 @@ public class Game {
             addAsteroid();
         }
     }
-
+        //Tick
     private void updateGravityWells() {
         List<GravityField> toRemoveWells = new ArrayList<>();
 
