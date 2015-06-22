@@ -1,6 +1,7 @@
 package be.kaasnapps.gravitor.model;
 
 import be.kaasnapps.gravitor.model.util.Point;
+import be.kaasnapps.gravitor.model.util.RoundPhysicalObject;
 
 /**
  * test

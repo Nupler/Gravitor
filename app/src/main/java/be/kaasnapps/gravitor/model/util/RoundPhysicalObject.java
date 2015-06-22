@@ -1,6 +1,4 @@
-package be.kaasnapps.gravitor.model;
-
-import be.kaasnapps.gravitor.model.util.Point;
+package be.kaasnapps.gravitor.model.util;
 
 /**
  * Created by jonas on 24/04/2015.

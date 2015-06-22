@@ -1,7 +1,7 @@
 package be.kaasnapps.gravitor.model.asteroid;
 
 
-import be.kaasnapps.gravitor.model.RoundPhysicalObject;
+import be.kaasnapps.gravitor.model.util.RoundPhysicalObject;
 import be.kaasnapps.gravitor.model.util.Point;
 import be.kaasnapps.gravitor.model.util.Vector;
 

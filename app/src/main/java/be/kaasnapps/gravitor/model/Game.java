@@ -150,4 +150,14 @@ public class Game {
     public int getScore(){
         return score;
         }
+
+    public float getWidth() {
+        float fWidth = width;
+        return fWidth;
+    }
+
+    public float getHeight(){
+        float fHeight = height;
+        return fHeight;
+    }
 }
